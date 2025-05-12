@@ -9,32 +9,36 @@ import { notFound } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Dummy data
-const projectData = {
-  'portfolio-website': {
+// ✅ Project data with slugs
+const projects = [
+  {
+    slug: 'portfolio-website',
     title: 'Portfolio Website',
-    description: 'An animated portfolio with a 3D hero, smooth transitions, and responsive layout.',
+    description:
+      'An animated portfolio with a 3D hero, smooth transitions, and responsive layout.',
     images: ['/images/project1.jpg', '/images/project2.jpg'],
     tech: ['Next.js', 'Tailwind CSS', 'Framer Motion', 'GSAP'],
   },
-  'finance-tracker': {
+  {
+    slug: 'finance-tracker',
     title: 'Finance Tracker',
-    description: 'Track your income/expenses with visual charts and persistent storage.',
+    description:
+      'Track your income/expenses with visual charts and persistent storage.',
     images: ['/images/project3.jpg'],
     tech: ['React', 'Chart.js', 'Zustand'],
   },
-};
-
-interface ProjectData {
-  title: string;
-  description: string;
-  images: string[];
-  tech: string[];
-}
+  {
+    slug: 'personal-finance-visualizer',
+    title: 'Personal Finance Visualizer',
+    description:
+      'A modern, responsive, and lightweight web application to track expenses, view transactions, set budgets, and visualize personal finances — built with Next.js 14 (App Router), React 19, TailwindCSS, shadcn/ui, MongoDB, and Recharts.',
+    images: ['/images/finance-visualizer.jpg'],
+    tech: ['Next.js', 'React 19', 'TailwindCSS', 'MongoDB', 'Recharts', 'shadcn/ui'],
+  },
+];
 
 export default function ProjectDetail({ params }: { params: { slug: string } }) {
-  const data = projectData[params.slug as keyof typeof projectData];
-
+  const project = projects.find((p) => p.slug === params.slug);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -55,34 +59,38 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
     return () => ctx.revert();
   }, []);
 
-  if (!data) return notFound();
+  if (!project) return notFound();
 
   return (
-    <main ref={containerRef} className="px-6 py-20 bg-white dark:bg-gray-950">
-      <h1 className="text-4xl font-bold mb-6">{data.title}</h1>
-      <p className="text-lg mb-10 max-w-3xl fade-in">{data.description}</p>
+    <main ref={containerRef} className="min-h-screen py-20 px-6 bg-white dark:bg-black">
+      <motion.h1 className="text-4xl font-bold mb-6 fade-in">
+        {project.title}
+      </motion.h1>
+      <motion.p className="text-lg text-gray-700 dark:text-gray-300 mb-10 fade-in">
+        {project.description}
+      </motion.p>
 
-      <div className="grid md:grid-cols-2 gap-8 mb-10">
-        {data.images.map((src: string, i: number) => (
-          <motion.div
+      <div className="grid md:grid-cols-2 gap-8 mb-10 fade-in">
+        {project.images.map((img, i) => (
+          <Image
             key={i}
-            className="overflow-hidden rounded-xl fade-in"
-            whileHover={{ scale: 1.03 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Image src={src} alt={`screenshot-${i}`} width={800} height={500} className="w-full h-auto" />
-          </motion.div>
+            src={img}
+            alt={project.title}
+            width={800}
+            height={500}
+            className="rounded-lg object-cover w-full h-auto"
+          />
         ))}
       </div>
 
-      <h2 className="text-2xl font-semibold mb-4 fade-in">Technologies Used</h2>
-      <ul className="list-disc pl-6 space-y-2 fade-in">
-        {data.tech.map((tech: string, i: number) => (
-          <li key={i} className="text-lg">
-            {tech}
-          </li>
-        ))}
-      </ul>
+      <div className="fade-in">
+        <h2 className="text-2xl font-semibold mb-4">Tech Stack</h2>
+        <ul className="list-disc list-inside text-gray-800 dark:text-gray-200">
+          {project.tech.map((tech) => (
+            <li key={tech}>{tech}</li>
+          ))}
+        </ul>
+      </div>
     </main>
   );
 }

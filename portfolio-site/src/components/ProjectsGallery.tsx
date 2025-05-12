@@ -1,4 +1,3 @@
-// src/components/ProjectsGallery.tsx
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -13,10 +12,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
-    title: 'Portfolio Website',
-    description: 'Animated portfolio with 3D hero section, scroll effects, and responsive UI.',
-    image: '/images/project1.jpg',
-    tags: ['Next.js', 'Tailwind CSS'],
+    // https://finance-visualizer-two.vercel.app/
+    title: 'Personal Finance Visualizer',
+    description:
+      'A modern, responsive, and lightweight web application to track expenses, view transactions, set budgets, and visualize personal finances — built with Next.js 14 (App Router), React 19, TailwindCSS, shadcn/ui, MongoDB, and Recharts.',
+    image: '/images/finance-visualizer.jpg',
+    tags: ['Next.js', 'React 19', 'TailwindCSS', 'MongoDB', 'Recharts', 'shadcn/ui']
   },
   {
     title: 'Finance Tracker',
