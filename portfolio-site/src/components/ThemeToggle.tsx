@@ -1,19 +1,35 @@
-'use client'
+'use client';
 
-import { Button } from '@/components/ui/button'
-import { useTheme } from 'next-themes'
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
 
-const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme()
+export default function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Only access theme after component has mounted to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="w-8 h-8"></div>; // Placeholder of same size
+  }
+
+  console.log('Current theme:', theme); // Add this for debugging
 
   return (
-    <Button
-      variant="outline"
+    <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-black dark:text-white"
+      aria-label="Toggle theme"
     >
-      Toggle Theme
-    </Button>
-  )
+      {theme === 'dark' ? (
+        <Sun className="h-5 w-5" />
+      ) : (
+        <Moon className="h-5 w-5" />
+      )}
+    </button>
+  );
 }
-
-export default ThemeToggle
